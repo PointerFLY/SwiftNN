@@ -18,22 +18,28 @@ protocol OutLinkable {
 
 class Neuron: InLinkable, OutLinkable {
 
-    private(set) var lastOutput: Float = 0
     private let activation: Activation
-    private var inLinks = [Link]()
-    private var outLinks = [Link]()
+    private let inLinkGroup = InLinkGroup()
+    private let outLinkGroup = OutLinkGroup()
     
     init(activation: Activation) {
         self.activation = activation
+        
+        inLinkGroup.linksAreReady = { [weak self] values in
+            guard let me = self else { return }
+            let sum = values.reduce(0.0, +)
+            let value = activation.call(sum)
+            me.outLinkGroup.forward(value)
+        }
     }
     
     func acceptInLink(_ link: Link) {
-        inLinks.append(link)
+        inLinkGroup.addLink(link)
     }
     
     func outLinkTo(_ inLinkable: InLinkable) {
         let link = Link()
         inLinkable.acceptInLink(link)
-        outLinks.append(link)
+        outLinkGroup.addLink(link)
     }
 }
