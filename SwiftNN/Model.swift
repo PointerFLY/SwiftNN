@@ -16,16 +16,25 @@ class Model {
         layers.append(layer)
     }
     
-    func predict(_ input: [Double]) -> [Double] {
-        var output = input
+    func predict(x: [Double]) -> [Double] {
+        var output = x
         for layer in layers {
             output = layer.feedForward(vector: output)
         }
         
         return output
     }
-    
-    func train(x: [Double], y: [Double]) {
-        
+
+    func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int = 100) {
+        for i in 0..<iteration {
+            var totalLoss = 0.0
+            for x in xList {
+                for label in labels {
+                    let y = predict(x: x)
+                    totalLoss += loss.call(y: y, label: label)
+                }
+            }
+
+        }
     }
 }

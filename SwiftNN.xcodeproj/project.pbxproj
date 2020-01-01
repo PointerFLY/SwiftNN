@@ -11,6 +11,7 @@
 		3550514E23B849D800880F20 /* Activation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550514D23B849D800880F20 /* Activation.swift */; };
 		3550516123BC8C6C00880F20 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550516023BC8C6C00880F20 /* Model.swift */; };
 		3550516323BC8C7100880F20 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550516223BC8C7100880F20 /* Layer.swift */; };
+		35FB623723BC96720066E45A /* Loss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FB623623BC96720066E45A /* Loss.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		3550514D23B849D800880F20 /* Activation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activation.swift; sourceTree = "<group>"; };
 		3550516023BC8C6C00880F20 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3550516223BC8C7100880F20 /* Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
+		35FB623623BC96720066E45A /* Loss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loss.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,9 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				3550513E23B6E1A600880F20 /* main.swift */,
-				3550514D23B849D800880F20 /* Activation.swift */,
 				3550516023BC8C6C00880F20 /* Model.swift */,
 				3550516223BC8C7100880F20 /* Layer.swift */,
+				3550514D23B849D800880F20 /* Activation.swift */,
+				35FB623623BC96720066E45A /* Loss.swift */,
 			);
 			path = SwiftNN;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35FB623723BC96720066E45A /* Loss.swift in Sources */,
 				3550516123BC8C6C00880F20 /* Model.swift in Sources */,
 				3550514E23B849D800880F20 /* Activation.swift in Sources */,
 				3550516323BC8C7100880F20 /* Layer.swift in Sources */,
