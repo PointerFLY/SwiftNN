@@ -8,38 +8,18 @@
 
 import Foundation
 
-let in1 = Link()
-let in2 = Link()
+let model = Model()
 
-let n1 = Neuron(activation: Relu())
-let n2 = Neuron(activation: Relu())
+let layer1 = Layer(inputSize: 3, outputSize: 4, activation: Relu())
+let layer2 = Layer(inputSize: 4, outputSize: 4, activation: Relu())
+let layer3 = Layer(inputSize: 4, outputSize: 3, activation: Relu())
+let layer4 = Layer(inputSize: 3, outputSize: 1, activation: Relu())
 
-n1.acceptInLink(in1)
-n1.acceptInLink(in2)
-n2.acceptInLink(in1)
-n2.acceptInLink(in2)
+model.addLayer(layer1)
+model.addLayer(layer2)
+model.addLayer(layer3)
+model.addLayer(layer4)
 
-class OutputUnit: InLinkable {
-    
-    var link: Link? = nil
-    
-    func acceptInLink(_ link: Link) {
-        self.link = link
-    }
-}
+let output = model.predict([3, 3, 3])
+print(output)
 
-let out1 = OutputUnit()
-let out2 = OutputUnit()
-
-n1.outLinkTo(out1)
-n2.outLinkTo(out2)
-
-out1.link?.valueChanged = { value in
-    print(value)
-}
-out2.link?.valueChanged = { value in
-    print(value)
-}
-
-in1.value = 3
-in2.value = 4
