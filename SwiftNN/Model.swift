@@ -26,7 +26,7 @@ class Model {
     }
 
     func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int, learningRate: Double) {
-        for _ in 0..<iteration {
+        for epoch in 0..<iteration {
             var error = 0.0
             
             for i in 0..<xList.count {
@@ -41,7 +41,7 @@ class Model {
                 }
             }
             
-            print("Training error: \(error)")
+            print("Epoch \(epoch) training error: \(error)")
         }
     }
 }

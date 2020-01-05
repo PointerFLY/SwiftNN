@@ -18,14 +18,14 @@ struct Regression {
         
         print(model.predict(x: [500]))
         
-        let (xList, labels) = generateTrainingData(100)
+        let (xList, labels) = generateTrainingData(1000)
         model.train(xList: xList, labels: labels,
                     loss: RMSE(),
                     iteration: 100,
                     learningRate: 0.0001)
         
         print(model.predict(x: [10]))
-        print(model.predict(x: [2342534543]))
+        print(model.predict(x: [90]))
     }
     
     static func generateTrainingData(_ size: Int) -> ([[Double]], [[Double]]) {
@@ -35,6 +35,6 @@ struct Regression {
     }
     
     static func targetFunc(x: Double) -> Double {
-        return x * 2
+        return x * 5 + 10
     }
 }

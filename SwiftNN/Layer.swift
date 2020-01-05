@@ -22,18 +22,21 @@ class Layer {
         self.outputSize = outputSize
         self.activation = activation
         
-        let row = [Double](repeating: 0, count: inputSize)
+        let row = [Double](repeating: 0, count: inputSize + 1) // Plus one for bias
         matrix = [[Double]](repeating: row, count: outputSize)
         
         for i in 0..<outputSize {
-            for j in 0..<inputSize {
+            for j in 0..<(inputSize + 1) {
                 matrix[i][j] = Double.random(in: 0...1)
             }
         }
     }
     
     func feedForward(vector: [Double]) -> [Double] {
+        var vector = vector
+        vector.append(1.0) // Bias
         lastInput = vector
+        
         var newVector = [Double]()
         lastSums.removeAll()
         for row in matrix {
