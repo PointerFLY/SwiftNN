@@ -25,16 +25,23 @@ class Model {
         return output
     }
 
-    func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int = 100) {
-        for i in 0..<iteration {
-            var totalLoss = 0.0
-            for x in xList {
-                for label in labels {
-                    let y = predict(x: x)
-                    totalLoss += loss.call(y: y, label: label)
+    func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int) {
+        for _ in 0..<iteration {
+            var error = 0.0
+            
+            for i in 0..<xList.count {
+                let x = xList[i]
+                let label = labels[i]
+                let y = predict(x: x)
+                error += loss.call(y: y, label: label)
+                
+                var gradient = loss.gradient(y: y, label: label)
+                for layer in layers.reversed() {
+                    gradient = layer.backPropagate(vector: gradient)
                 }
             }
-
+            
+            print("Training error: \(error)")
         }
     }
 }

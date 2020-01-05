@@ -10,14 +10,14 @@ import Foundation
 
 protocol Activation {
     
-    func call(_ x: Float) -> Float
+    func call(_ x: Double) -> Double
     
     func derivative(x: Double) -> Double
 }
 
 class Relu: Activation {
     
-    func call(_ x: Float) -> Float {
+    func call(_ x: Double) -> Double {
         return max(x, 0.0)
     }
     
@@ -28,21 +28,8 @@ class Relu: Activation {
 
 class Echo: Activation {
     
-    func call(_ x: Float) -> Float {
+    func call(_ x: Double) -> Double {
         return x
-    }
-    
-    func derivative(x: Double) -> Double {
-        return 1.0
-    }
-}
-
-class Sigmoid: Activation {
-    
-    static let e: Float = 2.71828182845904523536
-    
-    func call(_ x: Float) -> Float {
-        return 1.0 / (1 + pow(Sigmoid.e, -x))
     }
     
     func derivative(x: Double) -> Double {

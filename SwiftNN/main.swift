@@ -9,21 +9,15 @@
 import Foundation
 
 let model = Model()
+model.addLayer(Layer(inputSize: 1, outputSize: 4, activation: Relu()))
+model.addLayer(Layer(inputSize: 4, outputSize: 4, activation: Relu()))
+model.addLayer(Layer(inputSize: 4, outputSize: 1, activation: Relu()))
 
-let layer1 = Layer(inputSize: 1, outputSize: 4, activation: Relu())
-let layer2 = Layer(inputSize: 4, outputSize: 4, activation: Relu())
-let layer3 = Layer(inputSize: 4, outputSize: 3, activation: Relu())
-let layer4 = Layer(inputSize: 3, outputSize: 1, activation: Relu())
-
-model.addLayer(layer1)
-model.addLayer(layer2)
-model.addLayer(layer3)
-model.addLayer(layer4)
+print(model.predict(x: [3.5]))
 
 let xList: [[Double]] = [[1], [2], [3], [4], [5]]
 let labels: [[Double]] = [[2], [4], [6], [8], [10]]
-model.train(xList: xList, labels: labels, loss: RMSE())
+model.train(xList: xList, labels: labels, loss: RMSE(), iteration: 10)
 
-let output = model.predict(x: [3, 3, 3])
-print(output)
-
+print(model.predict(x: [3.5]))
+print(model.predict(x: [14]))

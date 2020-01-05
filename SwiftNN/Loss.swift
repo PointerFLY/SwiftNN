@@ -12,7 +12,7 @@ protocol Loss {
     
     func call(y: [Double], label: [Double]) -> Double
     
-    func derivative(y: [Double], label: [Double], yi: Double, labeli: Double) -> Double
+    func gradient(y: [Double], label: [Double]) -> [Double]
 }
 
 class RMSE: Loss {
@@ -27,8 +27,15 @@ class RMSE: Loss {
         return error
     }
     
-    func derivative(y: [Double], label: [Double], yi: Double, labeli: Double) -> Double {
-        return 1.0
+    func gradient(y: [Double], label: [Double]) -> [Double] {
+        var gradient = [Double]()
+        for i in 0..<y.count {
+            let numerator = Double(label.count) * sqrt(call(y: y, label: label))
+            let derivative = (y[i] - label[i]) / numerator
+            gradient.append(derivative)
+        }
+        
+        return gradient
     }
 }
 

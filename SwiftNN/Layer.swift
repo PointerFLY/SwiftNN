@@ -14,6 +14,8 @@ class Layer {
     private let outputSize: Int
     private let activation: Activation
     private var matrix: [[Double]]
+    private var lastInput = [Double]()
+    private var lastSums = [Double]()
     
     init(inputSize: Int, outputSize: Int, activation: Activation) {
         self.inputSize = inputSize
@@ -31,19 +33,41 @@ class Layer {
     }
     
     func feedForward(vector: [Double]) -> [Double] {
+        lastInput = vector
         var newVector = [Double]()
+        lastSums.removeAll()
         for row in matrix {
             var sum = 0.0
             for i in 0..<row.count {
                 sum += row[i] * vector[i]
             }
-            newVector.append(sum)
+            lastSums.append(sum)
+            newVector.append(activation.call(sum))
         }
-        
+
         return newVector
     }
     
-    func backPropagate(vector: [Double]) {
+    func backPropagate(vector: [Double]) -> [Double] {
+        let learningRate = 0.001
+        var newVector = [Double]()
         
+        for i in 0..<matrix.count {
+            let element = vector[i]
+            for j in 0..<matrix[0].count {
+                let partial = element * activation.derivative(x: lastSums[i]) * lastInput[j]
+                matrix[i][j] = matrix[i][j] - partial * learningRate
+            }
+        }
+        
+        for i in 0..<matrix[0].count {
+            var loss = 0.0
+            for j in 0..<matrix.count {
+                loss += matrix[j][i] * vector[j]
+            }
+            newVector.append(loss)
+        }
+        
+        return newVector
     }
 }
