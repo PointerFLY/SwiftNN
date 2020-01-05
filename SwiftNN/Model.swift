@@ -25,7 +25,7 @@ class Model {
         return output
     }
 
-    func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int) {
+    func train(xList: [[Double]], labels: [[Double]], loss: Loss, iteration: Int, learningRate: Double) {
         for _ in 0..<iteration {
             var error = 0.0
             
@@ -37,7 +37,7 @@ class Model {
                 
                 var gradient = loss.gradient(y: y, label: label)
                 for layer in layers.reversed() {
-                    gradient = layer.backPropagate(vector: gradient)
+                    gradient = layer.backPropagate(vector: gradient, learningRate: learningRate)
                 }
             }
             

@@ -22,7 +22,7 @@ class Relu: Activation {
     }
     
     func derivative(x: Double) -> Double {
-        return x < 0 ? 0 : x
+        return x < 0 ? 0 : 1
     }
 }
 

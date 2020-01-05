@@ -30,12 +30,10 @@ class RMSE: Loss {
     func gradient(y: [Double], label: [Double]) -> [Double] {
         var gradient = [Double]()
         for i in 0..<y.count {
-            let numerator = Double(label.count) * sqrt(call(y: y, label: label))
-            let derivative = (y[i] - label[i]) / numerator
+            let derivative = (y[i] - label[i])
             gradient.append(derivative)
         }
         
         return gradient
     }
 }
-
