@@ -10,68 +10,67 @@ import Foundation
 
 class Layer {
     
-    private let inputSize: Int
-    private let outputSize: Int
-    private let activation: Activation
+    private let columns: Int
+    private let rows: Int
     private var matrix: [[Double]]
-    private var lastInput = [Double]()
-    private var lastSums = [Double]()
+    private let bias = 1.0
+    private let activation: Activation
+    private var lastInput: [Double]
+    private var lastSums: [Double]
     
     init(inputSize: Int, outputSize: Int, activation: Activation) {
-        self.inputSize = inputSize
-        self.outputSize = outputSize
+        self.columns = inputSize + 1 // Plus one for bias
+        self.rows = outputSize
         self.activation = activation
+        self.lastInput = [Double](repeating: 0.0, count: inputSize)
+        self.lastSums = [Double](repeating: 0.0, count: outputSize)
         
-        let row = [Double](repeating: 0, count: inputSize + 1) // Plus one for bias
-        matrix = [[Double]](repeating: row, count: outputSize)
+        let row = [Double](repeating: 0, count: columns)
+        matrix = [[Double]](repeating: row, count: rows)
         
-        for i in 0..<outputSize {
-            for j in 0..<(inputSize + 1) {
+        for i in 0..<rows {
+            for j in 0..<columns {
                 matrix[i][j] = Double.random(in: 0...1)
             }
         }
     }
     
     func feedForward(vector: [Double]) -> [Double] {
-        var vector = vector
-        vector.append(1.0) // Bias
+        let vector = vector + [bias]
         lastInput = vector
         
-        var newVector = [Double]()
-        lastSums.removeAll()
-        for row in matrix {
+        var output = [Double](repeating: 0.0, count: rows)
+        for i in 0..<rows {
             var sum = 0.0
-            for i in 0..<row.count {
-                sum += row[i] * vector[i]
+            for j in 0..<columns {
+                sum += matrix[i][j] * vector[j]
             }
-            lastSums.append(sum)
-            newVector.append(sum)
+            output[i] = sum
         }
-        
+        lastSums = output
 
-        return activation.call(x: newVector)
+        return activation.call(x: output)
     }
     
     func backPropagate(vector: [Double], learningRate: Double) -> [Double] {
-        var newVector = [Double]()
+        let activationGradient = activation.gradient(x: lastSums)
+        var inputGradient = [Double](repeating: 0.0, count: columns)
         
-        let actGradient = activation.gradient(x: lastSums)
+        for i in 0..<columns {
+            var derivative = 0.0
+            for j in 0..<rows {
+                derivative += matrix[j][i] * vector[j] * activationGradient[j]
+            }
+            inputGradient[i] = derivative
+        }
         
-        for i in 0..<matrix.count {
-            for j in 0..<matrix[0].count {
-                let partial = vector[i] * actGradient[i] * lastInput[j]
+        for i in 0..<rows {
+            for j in 0..<columns {
+                let partial = vector[i] * activationGradient[i] * lastInput[j]
                 matrix[i][j] = matrix[i][j] - partial * learningRate
             }
         }
         
-        for i in 0..<matrix[0].count {
-            var loss = 0.0
-            for j in 0..<matrix.count {
-                loss += matrix[j][i] * vector[j] * actGradient[j]
-            }
-            newVector.append(loss)
-        }
-        
-        return newVector
+        return inputGradient
     }
 }

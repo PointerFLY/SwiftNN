@@ -41,7 +41,7 @@ class Model {
                 }
             }
             
-            print("Epoch \(epoch) training error: \(error)")
+            print("Epoch \(epoch) training error: \(error / Double(xList.count))")
         }
     }
 }
