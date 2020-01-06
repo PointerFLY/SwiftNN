@@ -10,29 +10,39 @@ import Foundation
 
 protocol Activation {
     
-    func call(_ x: Double) -> Double
+    func call(x: [Double]) -> [Double]
     
-    func derivative(x: Double) -> Double
+    func gradient(x: [Double]) -> [Double]
 }
 
 class Relu: Activation {
     
-    func call(_ x: Double) -> Double {
-        return max(x, 0.0)
+    func call(x: [Double]) -> [Double] {
+        return x.map { max($0, 0.0) }
     }
     
-    func derivative(x: Double) -> Double {
-        return x < 0 ? 0 : 1
+    func gradient(x: [Double]) -> [Double] {
+        return x.map { $0 < 0 ? 0 : 1 }
+    }
+}
+
+class Sigmoid: Activation {
+    
+    func call(x: [Double]) -> [Double] {
+        return x.map { 1.0 / (1 + exp(-$0)) }
+    }
+    
+    func gradient(x: [Double]) -> [Double] {
+        return call(x: x).map { $0 * (1 - $0) }
     }
 }
 
 class Echo: Activation {
-    
-    func call(_ x: Double) -> Double {
+    func call(x: [Double]) -> [Double] {
         return x
     }
     
-    func derivative(x: Double) -> Double {
-        return 1.0
+    func gradient(x: [Double]) -> [Double] {
+        return x.map { _ in 1.0 }
     }
 }

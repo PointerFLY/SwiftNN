@@ -45,18 +45,21 @@ class Layer {
                 sum += row[i] * vector[i]
             }
             lastSums.append(sum)
-            newVector.append(activation.call(sum))
+            newVector.append(sum)
         }
+        
 
-        return newVector
+        return activation.call(x: newVector)
     }
     
     func backPropagate(vector: [Double], learningRate: Double) -> [Double] {
         var newVector = [Double]()
         
+        let actGradient = activation.gradient(x: lastSums)
+        
         for i in 0..<matrix.count {
             for j in 0..<matrix[0].count {
-                let partial = vector[i] * activation.derivative(x: lastSums[i]) * lastInput[j]
+                let partial = vector[i] * actGradient[i] * lastInput[j]
                 matrix[i][j] = matrix[i][j] - partial * learningRate
             }
         }
@@ -64,7 +67,7 @@ class Layer {
         for i in 0..<matrix[0].count {
             var loss = 0.0
             for j in 0..<matrix.count {
-                loss += matrix[j][i] * vector[j] * activation.derivative(x: lastSums[j])
+                loss += matrix[j][i] * vector[j] * actGradient[j]
             }
             newVector.append(loss)
         }

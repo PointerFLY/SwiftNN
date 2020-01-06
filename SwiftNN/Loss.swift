@@ -37,3 +37,26 @@ class RMSE: Loss {
         return gradient
     }
 }
+
+class MAE: Loss {
+    
+    func call(y: [Double], label: [Double]) -> Double {
+        var error = 0.0
+        for i in 0..<y.count {
+            error += abs(y[i] - label[i])
+        }
+        
+        error = error / Double(y.count)
+        return error
+    }
+    
+    func gradient(y: [Double], label: [Double]) -> [Double] {
+        var gradient = [Double]()
+        for i in 0..<y.count {
+            let derivative = y[i] > label[i] ? 1.0 : -1.0
+            gradient.append(derivative)
+        }
+        
+        return gradient
+    }
+}
